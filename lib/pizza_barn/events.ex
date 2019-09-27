@@ -2,9 +2,9 @@ defmodule PizzaBarn.Events do
   alias PizzaBarn.{Customer, Event, Order}
 
   @all_objects [Customer, Order]
-  @default_actions [:created]
+  @default_actions [:created, :updated, :deleted]
   @object_actions [
-    {Order, [:created]}
+    {Order, [:created, :cancelled]}
   ]
 
   def generate(opts \\ []) do
