@@ -2,7 +2,7 @@ defmodule MysticPizza.FulfillmentPipeline do
   @moduledoc """
   Consumes events from the PizzaBarn producer.
 
-  Processed messages are stored as entries in the database.
+  Processed messages are batched and stored as entries in the database.
   """
   use Broadway
   alias Broadway.Message
