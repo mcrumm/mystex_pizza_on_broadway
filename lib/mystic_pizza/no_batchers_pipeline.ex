@@ -38,21 +38,26 @@ defmodule MysticPizza.NoBatchersPipeline do
     |> process_message()
   end
 
-  defp process_message(%{data: %{"type" => event}} = message) do
-    %{data: %{"object" => attrs}} = message
-
+  # processes messages with expected data from PizzaBarn
+  defp process_message(
+         %Message{data: %{"type" => event, "object" => attrs}} = message
+       ) do
+    # Splits the "type" value to match only on `*.created` events
     with [resource, "created"] <- String.split(event, ".", parts: 2),
          {:ok, _struct} <- create(resource, attrs) do
       message
     else
       {:error, reason} ->
+        # fails the message when create/2 fails
         Message.failed(message, reason)
 
       _ ->
+        # ignores event types we don't care about
         message
     end
   end
 
+  # ignores messages we don't care about
   defp process_message(message), do: message
 
   defp decode!(data) when is_binary(data) do

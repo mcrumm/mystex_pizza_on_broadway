@@ -5,7 +5,8 @@ defmodule MysticPizza.FulfillmentPipeline do
   Processed messages are batched and stored as entries in the database.
   """
   use Broadway
-  alias Broadway.Message
+  alias Broadway.{BatchInfo, Message}
+  alias Ecto.Changeset
   alias MysticPizza.{Customer, Order, Repo}
 
   def start_link(_opts) do
@@ -59,6 +60,7 @@ defmodule MysticPizza.FulfillmentPipeline do
   defp pre_process_message(message), do: message
 
   defp process_message(%{data: %{"type" => event}} = message) do
+    # Route the messages to the proper batcher
     case batching(event) do
       :default ->
         message
@@ -81,14 +83,14 @@ defmodule MysticPizza.FulfillmentPipeline do
   defp batching(_), do: :default
 
   @impl Broadway
-  def handle_batch(:insert_all, messages, %{batch_key: Customer}, _) do
+  def handle_batch(:insert_all, messages, %BatchInfo{batch_key: Customer}, _) do
     batch_insert_all(Customer, messages,
       on_conflict: :replace_all_except_primary_key,
       conflict_target: [:id]
     )
   end
 
-  def handle_batch(:insert_all, messages, %{batch_key: schema}, _) do
+  def handle_batch(:insert_all, messages, %BatchInfo{batch_key: schema}, _) do
     batch_insert_all(schema, messages)
   end
 
