@@ -27,7 +27,7 @@ defmodule MysticPizza.FulfillmentPipeline do
       batchers: [
         default: [],
         insert_all: [
-          batch_size: 20,
+          batch_size: 50,
           batch_timeout: 1_000
         ]
       ]
