@@ -42,7 +42,9 @@ defmodule MysticPizza.FulfillmentPipeline do
     |> process_message()
   end
 
-  defp pre_process_message(%{data: %{"type" => "order.created"}} = message) do
+  defp pre_process_message(
+         %Message{data: %{"type" => "order.created"}} = message
+       ) do
     %{data: %{"object" => %{"customer" => customer_id}}} = message
 
     customer = %Customer{id: customer_id}
@@ -57,9 +59,9 @@ defmodule MysticPizza.FulfillmentPipeline do
     end
   end
 
-  defp pre_process_message(message), do: message
+  defp pre_process_message(%Message{} = message), do: message
 
-  defp process_message(%{data: %{"type" => event}} = message) do
+  defp process_message(%Message{data: %{"type" => event}} = message) do
     # Route the messages to the proper batcher
     case batching(event) do
       :default ->
@@ -72,7 +74,7 @@ defmodule MysticPizza.FulfillmentPipeline do
     end
   end
 
-  defp process_message(message), do: message
+  defp process_message(%Message{} = message), do: message
 
   defp decode!(data) when is_binary(data) do
     data |> Base.decode64!() |> Jason.decode!()
@@ -111,7 +113,7 @@ defmodule MysticPizza.FulfillmentPipeline do
 
   # Schemas with foreign keys need to be handled individually
   defp convert_batch_to_entries(Order, messages) do
-    Enum.map(messages, fn %{data: %{"object" => attrs}} ->
+    Enum.map(messages, fn %Message{data: %{"object" => attrs}} ->
       {customer_id, attrs} = Map.pop(attrs, "customer")
 
       %Changeset{changes: changes} =
