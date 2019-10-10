@@ -97,15 +97,15 @@ defmodule MysticPizza.FulfillmentPipeline do
   # Ensure all other batches get acknowledged
   def handle_batch(_, messages, _, _), do: messages
 
-  defp batch_insert_all(schema_or_source, messages, opts \\ []) do
-    entries = convert_batch_to_entries(schema_or_source, messages)
+  defp batch_insert_all(schema, messages, opts \\ []) do
+    entries = convert_batch_to_entries(schema, messages)
 
-    case Repo.insert_all(schema_or_source, entries, opts) do
+    case Repo.insert_all(schema, entries, opts) do
       {n, _} when n == length(entries) ->
         messages
 
       result ->
-        batch_failed(messages, {:insert_all, schema_or_source, result})
+        batch_failed(messages, {:insert_all, schema, result})
     end
   end
 
@@ -113,18 +113,24 @@ defmodule MysticPizza.FulfillmentPipeline do
   defp convert_batch_to_entries(Order, messages) do
     Enum.map(messages, fn %{data: %{"object" => attrs}} ->
       {customer_id, attrs} = Map.pop(attrs, "customer")
-      %{changes: changes} = Order.changeset(attrs)
 
-      changes
-      |> Map.put(:customer_id, customer_id)
-      |> Map.merge(timestamps(Order))
+      %Changeset{changes: changes} =
+        %Order{}
+        |> Order.changeset(attrs)
+        |> Changeset.put_change(:customer_id, customer_id)
+
+      Map.merge(changes, timestamps(Order))
     end)
   end
 
   # This converter should apply to any simple schemas
   defp convert_batch_to_entries(schema, messages) do
-    Enum.map(messages, fn %{data: %{"object" => data}} ->
-      %{changes: changes} = schema.changeset(data)
+    Enum.map(messages, fn %Message{data: %{"object" => attrs}} ->
+      %Changeset{changes: changes} =
+        schema
+        |> struct!()
+        |> schema.changeset(attrs)
+
       Map.merge(changes, timestamps(schema))
     end)
   end
