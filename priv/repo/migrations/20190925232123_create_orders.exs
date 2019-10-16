@@ -1,4 +1,4 @@
-defmodule MysticPizza.Repo.Migrations.CreateOrders do
+defmodule MystexPizza.Repo.Migrations.CreateOrders do
   use Ecto.Migration
 
   def change do

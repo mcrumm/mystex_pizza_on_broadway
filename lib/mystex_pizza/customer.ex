@@ -1,4 +1,4 @@
-defmodule MysticPizza.Customer do
+defmodule MystexPizza.Customer do
   use Ecto.Schema
   import Ecto.Changeset
 

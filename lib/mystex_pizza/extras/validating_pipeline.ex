@@ -1,4 +1,4 @@
-defmodule MysticPizza.ValidatingPipeline do
+defmodule MystexPizza.ValidatingPipeline do
   @moduledoc """
   Consumes events from the PizzaBarn producer.
 
@@ -9,7 +9,7 @@ defmodule MysticPizza.ValidatingPipeline do
   use Broadway
   alias Broadway.{BatchInfo, Message}
   alias Ecto.Changeset
-  alias MysticPizza.{Customer, Order, Repo}
+  alias MystexPizza.{Customer, Order, Repo}
 
   def start_link(_opts) do
     Broadway.start_link(__MODULE__,

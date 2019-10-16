@@ -1,4 +1,4 @@
-defmodule MysticPizza.NoBatchersPipeline do
+defmodule MystexPizza.NoBatchersPipeline do
   @moduledoc """
   Consumes events from the PizzaBarn producer.
 
@@ -7,11 +7,11 @@ defmodule MysticPizza.NoBatchersPipeline do
   Note: This process is not used within the application, but it provided here
   as an example.
 
-  Check out `MysticPizza.FulfillmentPipeline` for the batching example.
+  Check out `MystexPizza.FulfillmentPipeline` for the batching example.
   """
   use Broadway
   alias Broadway.Message
-  alias MysticPizza.{Customer, Order, Repo}
+  alias MystexPizza.{Customer, Order, Repo}
 
   def start_link(_opts) do
     Broadway.start_link(__MODULE__,

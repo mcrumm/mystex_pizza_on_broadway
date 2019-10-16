@@ -1,9 +1,9 @@
-defmodule MysticPizza.MixProject do
+defmodule MystexPizza.MixProject do
   use Mix.Project
 
   def project do
     [
-      app: :mystic_pizza_on_broadway,
+      app: :mystex_pizza_on_broadway,
       version: "0.1.0",
       elixir: "~> 1.8",
       start_permanent: Mix.env() == :prod,
@@ -15,7 +15,7 @@ defmodule MysticPizza.MixProject do
   def application do
     [
       extra_applications: [:logger],
-      mod: {MysticPizza.Application, []}
+      mod: {MystexPizza.Application, []}
     ]
   end
 

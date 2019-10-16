@@ -1,4 +1,4 @@
-defmodule MysticPizza.FulfillmentPipeline do
+defmodule MystexPizza.FulfillmentPipeline do
   @moduledoc """
   Consumes events from the PizzaBarn producer.
 
@@ -7,7 +7,7 @@ defmodule MysticPizza.FulfillmentPipeline do
   use Broadway
   alias Broadway.{BatchInfo, Message}
   alias Ecto.Changeset
-  alias MysticPizza.{Customer, Order, Repo}
+  alias MystexPizza.{Customer, Order, Repo}
 
   def start_link(_opts) do
     Broadway.start_link(__MODULE__,

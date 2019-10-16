@@ -1,4 +1,4 @@
-defmodule MysticPizza.Order do
+defmodule MystexPizza.Order do
   @moduledoc """
   The schema for an Order from PizzaBarn.
   """
@@ -9,7 +9,7 @@ defmodule MysticPizza.Order do
   @timestamps_opts type: :utc_datetime_usec
   schema "orders" do
     field(:amount, :integer)
-    belongs_to(:customer, MysticPizza.Customer, type: :string)
+    belongs_to(:customer, MystexPizza.Customer, type: :string)
     timestamps()
   end
 

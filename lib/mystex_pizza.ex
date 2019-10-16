@@ -1,6 +1,6 @@
-defmodule MysticPizza do
+defmodule MystexPizza do
   @moduledoc """
-  Documentation for MysticPizza.
+  Documentation for MystexPizza.
   """
 
   @doc """
@@ -8,7 +8,7 @@ defmodule MysticPizza do
 
   ## Examples
 
-      iex> MysticPizza.hello()
+      iex> MystexPizza.hello()
       :world
 
   """

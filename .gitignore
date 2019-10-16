@@ -20,5 +20,5 @@ erl_crash.dump
 *.ez
 
 # Ignore package tarball (built via "mix hex.build").
-mystic_pizza_on_broadway-*.tar
+mystex_pizza_on_broadway-*.tar
 

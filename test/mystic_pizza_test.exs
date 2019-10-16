@@ -1,8 +1,8 @@
-defmodule MysticPizzaTest do
+defmodule MystexPizzaTest do
   use ExUnit.Case
-  doctest MysticPizza
+  doctest MystexPizza
 
   test "greets the world" do
-    assert MysticPizza.hello() == :world
+    assert MystexPizza.hello() == :world
   end
 end
